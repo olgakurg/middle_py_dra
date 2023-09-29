@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - /opt/simple_project/postgresql_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: very_strong_password_here
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "5432:5432"
+
+  web:
+    image: python:3.11-alpine
+    build: 
+      context: ./django_api
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./django_api:/opt/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./configs/nginx/conf.d:/etc/nginx/conf.d
+      - ./data/static:/var/www/html/static
+    depends_on:
+      - web
+
