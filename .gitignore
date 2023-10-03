@@ -134,3 +134,4 @@ dmypy.json
 dump
 *.zip
 postgresql_data/
+simple_project/postgres.env
