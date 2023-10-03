@@ -135,3 +135,4 @@ dump
 *.zip
 postgresql_data/
 simple_project/postgres.env
+docker_compose/simple_project/postgres.env

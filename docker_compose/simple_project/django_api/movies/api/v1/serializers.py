@@ -8,7 +8,6 @@ class StringListSerializer(serializers.ListSerializer):
 
 
 class FilmworkSerializer(serializers.ModelSerializer):
-    creation_date = serializers.CharField(source="created")
     genres = serializers.StringRelatedField(many=True)
     actors = StringListSerializer()
     directors = StringListSerializer()
