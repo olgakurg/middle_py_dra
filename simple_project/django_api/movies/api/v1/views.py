@@ -5,15 +5,13 @@ from django.db.models import Q
 from django.contrib.postgres.aggregates import ArrayAgg
 from ...pagination import CustomPagination
 
-
 class MoviesAPIMixin:
 
     serializer_class = serializers.FilmworkSerializer
 
     def get_person_aggregation(self, role):
-        return ArrayAgg(
-                    "personfilmwork__person__full_name",
-                    filter=Q(personfilmwork__role=str(role))
+        return ArrayAgg("personfilmwork__person__full_name",
+                    filter=Q(personfilmwork__role=str(role)))
 
     def get_queryset(self):
         queryset = Filmwork.objects.all()
@@ -22,19 +20,12 @@ class MoviesAPIMixin:
             .annotate(
                 actors=self.get_person_aggregation("actor")
                 )
-            )
             .annotate(
-                directors=ArrayAgg(
-                    "personfilmwork__person__full_name",
-                    filter=Q(personfilmwork__role="director"),
+                directors=self.get_person_aggregation("director"),
                 )
-            )
             .annotate(
-                writers=ArrayAgg(
-                    "personfilmwork__person__full_name",
-                    filter=Q(personfilmwork__role="writer"),
+                writers=self.get_person_aggregation("writer"),
                 )
-            )
             .select_related()
         )
         return films

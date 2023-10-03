@@ -110,6 +110,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+posgres.env
 
 # Spyder project settings
 .spyderproject
@@ -129,6 +130,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#dumps
+#dumps and others
 dump
 *.zip
+postgresql_data/
